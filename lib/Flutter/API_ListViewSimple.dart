@@ -36,23 +36,22 @@ class FlutterAPIListViewTutorialPage extends StatefulWidget {
 }
 class _FlutterAPIListViewTutorialPageState
     extends State<FlutterAPIListViewTutorialPage> {
-  late Future<String> _responseStr;
   final String API_Auth_Token =
       "4-4a053d0cbc40c4933f4e35bcb690f1fb78019bbef4579baacb1e322530ad79d246dd6d1aa4bbfb47ca314";
 
   Future<List<Map<int, String>>> fetchExperiments() async {
-    print("get!");
     final response = await http.get(
         Uri.parse(
             "https://prp-electronic-lab.areasciencepark.it/api/v2/experiments"),
         headers: {"Authorization": API_Auth_Token});
     print(response.statusCode.toString());
+    print("------");
     if (response.statusCode == 200) {
       List experimentsList = json.decode(response.body);
       experimentsList.forEach(
-          (element) => print("${element['id']} : ${element['title']}"));
+              (element) => print("${element['id']} : ${element['title']}"));
       return List<Map<int, String>>.from(experimentsList.map((element) =>
-          <int, String>{element['id']: element['title']} as Map<int, String>));
+      <int, String>{element['id']: element['title']} as Map<int, String>));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -61,35 +60,13 @@ class _FlutterAPIListViewTutorialPageState
   }
 
   late Future<List<Map<int, String>>> futureExperiments;
-  late Future<Widget> futureTitle;
 
   @override
   void initState() {
     super.initState();
     futureExperiments = fetchExperiments();
-    futureTitle = Future<Widget>(()=>const Text("select an id"));
   }
 
-  void _showExperiment(int id) async {
-
-    setState(() {
-      futureTitle = Future<Widget>(() => const SizedBox(height: 50,
-      width: 50,
-      child: CircularProgressIndicator()));
-    });
-    final response = await http.get(
-        Uri.parse(
-            "https://prp-electronic-lab.areasciencepark.it/api/v2/experiments/$id"),
-        headers: {"Authorization": API_Auth_Token});
-    print(response.statusCode.toString());
-    setState(() {
-      if (response.statusCode == 200) {
-        var responseObj = jsonDecode(response.body);
-        print(responseObj);
-        futureTitle = Future<Widget>.delayed(const Duration(seconds: 3), () => Text(responseObj['title']));
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,49 +87,35 @@ class _FlutterAPIListViewTutorialPageState
         title: Text(widget.title),
       ),
       body: Container(
-        padding: const EdgeInsets.all(25),
+          padding: const EdgeInsets.all(25),
           child: Center(
-              // Center is a layout widget. It takes a single child and positions it
-              // in the middle of the parent.
-              child: Row(
-        children: [
-          Expanded(
-            child: FutureBuilder<List<Map<int, String>>>(
-                future: futureExperiments,
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    return SizedBox(
-                        width: 200,
-                        height: 500,
-                        child: ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            scrollDirection: Axis.vertical,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                child:
-                                    Text('${snapshot.data![index].keys}'),
-                                onTap: () => setState(() {
-                                  _showExperiment(
-                                      snapshot.data![index].keys.first);
-                                }),
-                              );
-                            }));
-                  }
-                }),
-          ),
-            FutureBuilder<Widget>(
-                future: futureTitle,
-                builder: (context, AsyncSnapshot<Widget> snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else {
-                    return snapshot.data!;
-                  }
-                }),
-        ],
-      ))),
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+                 child:
+                 Expanded(
+                    child: FutureBuilder<List<Map<int, String>>>(
+                        future: futureExperiments,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(child: CircularProgressIndicator());
+                          } else {
+                            return SizedBox(
+                                width: 200,
+                                height: 500,
+                                child: ListView.builder(
+                                    itemCount: snapshot.data!.length,
+                                    scrollDirection: Axis.vertical,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      return GestureDetector(
+                                        child:
+                                        Text('${snapshot.data![index].keys}'),
+                                        onTap: () => print("Clicked on ${snapshot.data![index].values}"),
+                                      );
+                                    }));
+                          }
+                        }),
+                  ),)
+      ),
     );
   }
 }

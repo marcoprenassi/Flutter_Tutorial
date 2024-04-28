@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(const ElabFTWAppRead());
@@ -88,7 +91,7 @@ class _MainPageState extends State<MainPage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return ElabAppMainScaffold();
+    return const ElabAppMainScaffold();
   }
 }
 
@@ -99,19 +102,45 @@ class ElabAppMainScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Material(
       child: Column(
+        textDirection: TextDirection.ltr,
         children: [
           ElabMainAppBar(
             title: "Test",
           ),
-          Expanded(
-              child: Center(
-            child: Text(
-              "Main Body",
-              textDirection: TextDirection.ltr,
-            ),
-          ))
+          Center(child: NewWidget())
         ],
       ),
     );
+  }
+}
+
+class NewWidget extends StatelessWidget {
+  const NewWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        width: 400,
+        height: 400,
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: GridView.count(
+            // Create a grid with 2 columns. If you change the scrollDirection to
+            // horizontal, this produces 2 rows.
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            crossAxisCount: 2,
+            // Generate 100 widgets that display their index in the List.
+            children: List.generate(4, (index) {
+                return (index % 2 == 0)
+                    ? Center(child: Text('Item $index'))
+                    : Center(
+                    child: GestureDetector(
+                        child: const Icon(Icons.arrow_forward),
+                        onTap: () => print("Tap $index")));
+
+              }),
+          ),
+        ));
   }
 }
