@@ -1,6 +1,6 @@
-# tutorial_project_0
+# flutter_tutorial_updated
 
-tutorial project example
+A Flutter Tutorial for Medical Informatics course of Università di Trieste
 
 ## Getting Started
 

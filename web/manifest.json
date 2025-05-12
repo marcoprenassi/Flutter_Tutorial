@@ -1,11 +1,11 @@
 {
-    "name": "tutorial_project_0",
-    "short_name": "tutorial_project_0",
+    "name": "flutter_tutorial_updated",
+    "short_name": "flutter_tutorial_updated",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "tutorial project example",
+    "description": "A Flutter Tutorial for Medical Informatics course of Università di Trieste",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
