@@ -72,6 +72,7 @@ class _MaterialShowcaseAppState extends State<MaterialShowcaseApp> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'Form'),
+          BottomNavigationBarItem(icon: Icon(Icons.abc), label: 'New'),
         ],
       ),
     );
